@@ -30,11 +30,15 @@
 
     </v-navigation-drawer>
     <v-main>
-      <v-app-bar location="top" class="d-flex align-center">
-        <v-btn color="primary" variant="outlined"> Show Dialog Top</v-btn>
+      <v-app-bar location="top">
+        <v-spacer></v-spacer>
+        <v-btn color="primary" > Show Dialog top</v-btn>
+        <v-spacer></v-spacer>
       </v-app-bar>
-      <v-app-bar location="bottom" class="d-flex align-center">
-        <v-btn color="primary" variant="outlined"> Show Dialog Bottom</v-btn>
+      <v-app-bar location="bottom">
+        <v-spacer></v-spacer>
+        <v-btn color="primary" > Show Dialog bottom</v-btn>
+        <v-spacer></v-spacer>
       </v-app-bar>
       <v-card class="h-100">
         <iframe src="/iframe.html" class="w-100 h-100"></iframe>
