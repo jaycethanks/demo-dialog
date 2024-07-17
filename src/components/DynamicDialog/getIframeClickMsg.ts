@@ -21,7 +21,7 @@ export type MsgData = {
     }
 }
 
-export const useMessage = function (messageHandler: Function) {
+export default function (messageHandler: Function) {
     window.addEventListener('message', function (event) {
         if (event.data.type === 'iframe-click') {
             messageHandler(event.data.clickEvent as MsgData)
@@ -29,7 +29,7 @@ export const useMessage = function (messageHandler: Function) {
     })
 }
 
-
+// 绘制坐标调试
 export const drawEl = (x: number, y: number) => {
     const div = document.createElement('div')
     div.style = `
