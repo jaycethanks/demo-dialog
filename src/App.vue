@@ -1,21 +1,17 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      image="https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg"
-      theme="dark"
-      permanent
-    >
+    <v-navigation-drawer image="https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg" theme="dark" permanent>
       <template v-slot:prepend>
         <div class="pa-2">
-          <v-btn block>
+          <v-btn block @click="handleClick">
             Show Dialog1
           </v-btn>
         </div>
       </template>
       <v-list nav>
-        <v-list-item v-for="i in 9">
+        <v-list-item v-for="i in 9" :key="i">
           <div class="pa-2">
-            <v-btn> Show Dialog List{{ i }}</v-btn>
+            <v-btn @click="handleClick"> Show Dialog List{{ i }}</v-btn>
           </div>
         </v-list-item>
 
@@ -32,12 +28,12 @@
     <v-main>
       <v-app-bar location="top">
         <v-spacer></v-spacer>
-        <v-btn color="primary" > Show Dialog top</v-btn>
+        <v-btn color="primary"> Show Dialog top</v-btn>
         <v-spacer></v-spacer>
       </v-app-bar>
       <v-app-bar location="bottom">
         <v-spacer></v-spacer>
-        <v-btn color="primary" > Show Dialog bottom</v-btn>
+        <v-btn color="primary"> Show Dialog bottom</v-btn>
         <v-spacer></v-spacer>
       </v-app-bar>
       <v-card class="h-100">
@@ -45,14 +41,39 @@
       </v-card>
     </v-main>
     <local-dialog v-model="dialog"></local-dialog>
+    <DynamicDialog v-model="dialog">
+      <v-card class="mx-auto border-primary border-md border-opacity-100" max-width="400" >
+        <v-img class="align-end text-white" height="200" src="https://cdn.vuetifyjs.com/images/cards/docks.jpg" cover>
+          <v-card-title>Top 10 Australian beaches</v-card-title>
+        </v-img>
+        <v-card-subtitle class="pt-4">
+          Number 10
+        </v-card-subtitle>
+        <v-card-text>
+          <div>Whitehaven Beach</div>
+          <div>Whitsunday Island, Whitsunday Islands</div>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="orange" text="Share"></v-btn>
+          <v-btn color="orange" text="Explore"></v-btn>
+        </v-card-actions>
+      </v-card>
+    </DynamicDialog>
   </v-app>
 </template>
 
 <script setup lang="ts">
 import LocalDialog from "@/components/LocalDialog.vue";
-import {ref} from "vue"
+import DynamicDialog from "@/components/DynamicDialog/index.vue"
+
+import { ref } from "vue"
 
 const dialog = ref(false)
+
+const handleClick = (event)=>{
+  console.log('event',event)
+
+}
 </script>
 
 <style></style>

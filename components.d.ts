@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    DynamicDialog: typeof import('./src/components/DynamicDialog/index.vue')['default']
     LocalDialog: typeof import('./src/components/LocalDialog.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

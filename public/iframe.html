@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>多个 Div 和按钮示例</title>
     <style>
+        :root{
+            position: relative;
+        }
         .container {
             display: flex;
             flex-direction: column;
@@ -28,40 +32,160 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .button.right{
+            position: fixed;
+            right: 0;
+            top: 50%;
+        }
+        .button.left{
+            position: fixed;
+            left: 0;
+            top: 50%;
+        }
+        .button.lt{
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+        .button.rt{
+            position: fixed;
+            right: 0;
+            top: 0;
+        }
+        .button.lb{
+            position: fixed;
+            left: 0;
+            bottom: 0;
+        }
+        .button.rb{
+            position: fixed;
+            right: 0;
+            bottom: 0;
+        }
     </style>
 </head>
-<body>
-<div class="container">
-    <div class="box">
-        <button class="button">按钮 1</button>
+
+<body style="position: relative;">
+    <div class="container">
+        <div class="box">
+            <button class="button" onclick="handleClick(event)">按钮 1</button>
+        </div>
+        <div class="box">
+            <button class="button" onclick="handleClick(event)">按钮 2</button>
+        </div>
+        <div class="box">
+            <button class="button" onclick="handleClick(event)">按钮 3</button>
+        </div>
+        <div class="box">
+            <button class="button" onclick="handleClick(event)">按钮 4</button>
+        </div>
+        <div class="box">
+            <button class="button" onclick="handleClick(event)">按钮 5</button>
+        </div>
+        <div class="box">
+            <button class="button" onclick="handleClick(event)">按钮 6</button>
+        </div>
+        <div class="box">
+            <button class="button" onclick="handleClick(event)">按钮 7</button>
+        </div>
+        <div class="box">
+            <button class="button" onclick="handleClick(event)">按钮 8</button>
+        </div>
+        <div class="box">
+            <button class="button" onclick="handleClick(event)">按钮 9</button>
+        </div>
+        <div class="box">
+            <button class="button" onclick="handleClick(event)">按钮 10</button>
+        </div>
+
+        <!-- MORE BTN  -->
+
+            <button class="button right" onclick="handleClick(event)">按钮 Right</button>
+            <button class="button left" onclick="handleClick(event)">按钮 Left</button>
+            <button class="button lt" onclick="handleClick(event)">按钮 LT</button>
+            <button class="button lb" onclick="handleClick(event)">按钮 LB</button>
+            <button class="button rt" onclick="handleClick(event)">按钮 RT</button>
+            <button class="button rb" onclick="handleClick(event)">按钮 RB</button>
+        
+
     </div>
-    <div class="box">
-        <button class="button">按钮 2</button>
-    </div>
-    <div class="box">
-        <button class="button">按钮 3</button>
-    </div>
-    <div class="box">
-        <button class="button">按钮 4</button>
-    </div>
-    <div class="box">
-        <button class="button">按钮 5</button>
-    </div>
-    <div class="box">
-        <button class="button">按钮 6</button>
-    </div>
-    <div class="box">
-        <button class="button">按钮 7</button>
-    </div>
-    <div class="box">
-        <button class="button">按钮 8</button>
-    </div>
-    <div class="box">
-        <button class="button">按钮 9</button>
-    </div>
-    <div class="box">
-        <button class="button">按钮 10</button>
-    </div>
-</div>
+    <script>
+        function handleClick(e) {
+            // 获取点击事件在 iframe 内的坐标
+            let iframeX = e.clientX;
+            let iframeY = e.clientY;
+            const { left: elLeft, top: elTop, width: elWidth, height: elHeight } = e.target.getBoundingClientRect();
+
+            // 获取 iframe 在父窗口中的位置
+            let iframeRect = window.frameElement.getBoundingClientRect();
+
+            // 计算相对蒸馏浏览器窗口元素的左上脚坐标
+            let absoluteElLeft = iframeRect.left + elLeft
+            let absoluteElTop = iframeRect.top + elTop
+
+            // 计算相对于整个浏览器窗口的坐标
+            let absoluteX = iframeRect.left + iframeX;
+            let absoluteY = iframeRect.top + iframeY;
+
+            // 考虑父窗口的滚动位置
+            // absoluteX += window.parent.pageXOffset;
+            // absoluteY += window.parent.pageYOffset;
+
+            window.parent.postMessage({
+                type: 'iframe-click',
+                clickEvent: {
+                    clickX: absoluteX,
+                    clickY: absoluteY,
+                    element: {
+                        x: absoluteElLeft,
+                        y: absoluteElTop,
+                        height: elHeight,
+                        width: elWidth
+                    }
+                }
+            }, '*')
+        }
+
+
+
+        // 处理页面滚动
+
+        // 阻止默认滚动行为
+        function preventDefault(e) {
+            e.preventDefault();
+        }
+
+        // 禁用滚动
+        function disableScroll() {
+            document.addEventListener('wheel', preventDefault, { passive: false });
+        }
+
+        // 启用滚动
+        function enableScroll() {
+            document.removeEventListener('wheel', preventDefault);
+        }
+
+
+        window.addEventListener('message', function (event) {
+            if (event.data.type === 'disableScrollEvent') {
+                disableScroll()
+            }
+            if (event.data.type === "enableScrollEvent") {
+                enableScroll()
+            }
+
+        });
+
+
+        // 处理 document 点击事件
+        document.addEventListener('click', (event)=>{
+            window.parent.postMessage({
+                type: 'doc-click',
+                nodeName:event.target.nodeName
+            }, '*')
+        })
+
+    </script>
 </body>
+
 </html>
